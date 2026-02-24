@@ -4,21 +4,44 @@
   <meta charset="UTF-8">
   <title>DARKCHAN - Fórum</title>
   <style>
-    body { background:black; color:red; font-family:'Arial Black',sans-serif; }
-    h1 { text-align:center; margin-top:20px; }
-    .board {
-      background:#111; border:2px solid red; margin:20px; padding:10px;
+    body {
+      background:black; color:red; font-family:'Orbitron', sans-serif;
+      animation: glitch-bg 0.2s infinite alternate;
     }
-    .board h2 { color:red; }
-    .thread { border-top:1px solid red; padding:5px; margin:5px 0; }
-    .response { margin-left:20px; border-left:2px solid red; padding-left:10px; color:#ff6666; }
+    h1 {
+      text-align:center; margin-top:20px;
+      text-shadow:0 0 10px red, 0 0 20px #ff0000;
+      animation: pulse 0.3s infinite alternate;
+    }
+    .board {
+      background:#111; border:2px solid red; margin:20px auto; padding:15px;
+      width:80%; max-width:900px;
+      box-shadow:0 0 15px red, inset 0 0 10px #ff0000;
+      animation: flicker 0.1s infinite alternate;
+    }
+    .board h2 { color:red; text-shadow:0 0 5px red; }
+    .thread {
+      border-top:1px solid red; padding:8px; margin:8px 0;
+      background:#000; box-shadow:0 0 5px red;
+    }
+    .response {
+      margin-left:20px; border-left:2px solid red; padding-left:10px;
+      color:#ff6666; animation: blink 0.2s infinite alternate;
+    }
     .post-input { margin-top:10px; }
     .post-input input {
-      width:70%; padding:5px; background:black; border:1px solid red; color:white;
+      width:70%; padding:8px; background:black; border:1px solid red; color:white;
+      box-shadow:0 0 5px red;
     }
     .post-input button {
-      background:red; color:black; border:none; padding:5px 10px; cursor:pointer;
+      background:red; color:black; border:none; padding:6px 12px; cursor:pointer;
+      animation: blink 0.2s infinite alternate;
     }
+
+    @keyframes flicker { from {opacity:1;} to {opacity:0.8;} }
+    @keyframes blink { from {opacity:1;} to {opacity:0.3;} }
+    @keyframes pulse { from {text-shadow:0 0 5px red;} to {text-shadow:0 0 20px #ff0000;} }
+    @keyframes glitch-bg { from {background:black;} to {background:#0a0a0a;} }
   </style>
 </head>
 <body>
@@ -79,7 +102,6 @@
         threadDiv.className = "thread";
         threadDiv.textContent = text;
 
-        // campo de resposta
         const responseInput = document.createElement("input");
         responseInput.placeholder = "Responder...";
         responseInput.style.marginTop = "5px";
