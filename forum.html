@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>DARKCHAN - Fórum</title>
+  <style>
+    body { background:black; color:red; font-family:'Arial Black',sans-serif; }
+    h1 { text-align:center; margin-top:20px; }
+    .board {
+      background:#111; border:2px solid red; margin:20px; padding:10px;
+    }
+    .board h2 { color:red; }
+    .thread { border-top:1px solid red; padding:5px; margin:5px 0; }
+    .response { margin-left:20px; border-left:2px solid red; padding-left:10px; color:#ff6666; }
+    .post-input { margin-top:10px; }
+    .post-input input {
+      width:70%; padding:5px; background:black; border:1px solid red; color:white;
+    }
+    .post-input button {
+      background:red; color:black; border:none; padding:5px 10px; cursor:pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>DARKCHAN - Fórum</h1>
+
+  <div class="board" id="catalogo">
+    <h2>Catálogo</h2>
+    <div class="threads"></div>
+    <div class="post-input">
+      <input type="text" id="input-catalogo" placeholder="Novo post em Catálogo...">
+      <button onclick="newThread('catalogo')">Postar</button>
+    </div>
+  </div>
+
+  <div class="board" id="tecnologia">
+    <h2>Tecnologia</h2>
+    <div class="threads"></div>
+    <div class="post-input">
+      <input type="text" id="input-tecnologia" placeholder="Novo post em Tecnologia...">
+      <button onclick="newThread('tecnologia')">Postar</button>
+    </div>
+  </div>
+
+  <div class="board" id="arte">
+    <h2>Arte</h2>
+    <div class="threads"></div>
+    <div class="post-input">
+      <input type="text" id="input-arte" placeholder="Novo post em Arte...">
+      <button onclick="newThread('arte')">Postar</button>
+    </div>
+  </div>
+
+  <div class="board" id="games">
+    <h2>Games</h2>
+    <div class="threads"></div>
+    <div class="post-input">
+      <input type="text" id="input-games" placeholder="Novo post em Games...">
+      <button onclick="newThread('games')">Postar</button>
+    </div>
+  </div>
+
+  <div class="board" id="politica">
+    <h2>Política</h2>
+    <div class="threads"></div>
+    <div class="post-input">
+      <input type="text" id="input-politica" placeholder="Novo post em Política...">
+      <button onclick="newThread('politica')">Postar</button>
+    </div>
+  </div>
+
+  <script>
+    function newThread(boardId) {
+      const input = document.getElementById("input-" + boardId);
+      const text = input.value.trim();
+      if (text) {
+        const threadsDiv = document.querySelector("#" + boardId + " .threads");
+        const threadDiv = document.createElement("div");
+        threadDiv.className = "thread";
+        threadDiv.textContent = text;
+
+        // campo de resposta
+        const responseInput = document.createElement("input");
+        responseInput.placeholder = "Responder...";
+        responseInput.style.marginTop = "5px";
+        responseInput.style.width = "70%";
+        responseInput.style.background = "black";
+        responseInput.style.color = "white";
+        responseInput.style.border = "1px solid red";
+
+        const responseButton = document.createElement("button");
+        responseButton.textContent = "Responder";
+        responseButton.style.marginLeft = "5px";
+        responseButton.style.background = "red";
+        responseButton.style.color = "black";
+        responseButton.onclick = () => {
+          if (responseInput.value.trim()) {
+            const respDiv = document.createElement("div");
+            respDiv.className = "response";
+            respDiv.textContent = responseInput.value.trim();
+            threadDiv.appendChild(respDiv);
+            responseInput.value = "";
+          }
+        };
+
+        threadDiv.appendChild(responseInput);
+        threadDiv.appendChild(responseButton);
+        threadsDiv.appendChild(threadDiv);
+        input.value = "";
+      }
+    }
+  </script>
+</body>
+</html>

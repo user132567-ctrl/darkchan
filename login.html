@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Login DARKCHAN</title>
+  <style>
+    body { background:black; color:red; font-family:'Arial Black',sans-serif; }
+    .login-container { display:flex; justify-content:center; align-items:center; height:100vh; }
+    .login-box { background:#111; padding:30px; border:3px solid red; text-align:center; }
+    .login-box input {
+      display:block; margin:10px auto; padding:10px; width:90%;
+      border:1px solid red; background:black; color:white;
+    }
+    .login-box button {
+      background:red; color:black; padding:10px 20px; border:none;
+      cursor:pointer; font-weight:bold; margin:5px;
+    }
+    canvas { display:block; margin:10px auto; border:1px solid red; }
+  </style>
+</head>
+<body>
+  <div class="login-container" id="login">
+    <div class="login-box">
+      <h1>DARKCHAN</h1>
+      <input type="text" id="username" placeholder="Usuário">
+      <input type="password" id="password" placeholder="Senha">
+      <canvas id="captchaCanvas" width="200" height="70"></canvas>
+      <input type="text" id="captchaInput" placeholder="Digite o código acima">
+      <button onclick="login()">Entrar</button>
+      <button onclick="generateCaptcha()">Atualizar CAPTCHA</button>
+    </div>
+  </div>
+
+  <script>
+    let captchaCode = "";
+
+    function generateCaptcha() {
+      const canvas = document.getElementById("captchaCanvas");
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = "black";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      captchaCode = "";
+      for (let i = 0; i < 6; i++) {
+        captchaCode += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+
+      ctx.font = "bold 32px Arial Black";
+      ctx.fillStyle = "red";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.shadowColor = "rgba(255,0,0,0.7)";
+      ctx.shadowBlur = 4;
+      ctx.fillText(captchaCode, canvas.width/2, canvas.height/2);
+    }
+
+    function login() {
+      const user = document.getElementById("username").value.trim();
+      const pass = document.getElementById("password").value.trim();
+      const captchaInput = document.getElementById("captchaInput").value.trim().toUpperCase();
+
+      if (!user || !pass) {
+        alert("Preencha usuário e senha!");
+        return;
+      }
+      if (captchaInput !== captchaCode) {
+        alert("CAPTCHA incorreto!");
+        generateCaptcha();
+        return;
+      }
+
+      // login válido → redireciona para a rota do servidor
+      window.location.href = "/forum";
+    }
+
+    window.onload = generateCaptcha;
+  </script>
+</body>
+</html>
