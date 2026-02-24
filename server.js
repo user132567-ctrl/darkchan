@@ -1,27 +1,21 @@
-const express = require("express");
-const path = require("path");
+const express = require('express');
+const path = require('path');
 const app = express();
+
+// Servir arquivos estáticos da raiz do projeto
+app.use(express.static(path.join(__dirname)));
+
+// Rota padrão para login.html
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'login.html'));
+});
+
+// Rota para forum.html
+app.get('/forum', (req, res) => {
+  res.sendFile(path.join(__dirname, 'forum.html'));
+});
+
 const PORT = process.env.PORT || 3000;
-
-// Servir arquivos estáticos da pasta "public"
-app.use(express.static(path.join(__dirname, "public")));
-
-// Rota principal → login
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "login.html"));
-});
-
-// Rota do fórum → chan
-app.get("/forum", (req, res) => {
-  res.sendFile(path.join(__dirname, "forum.html"));
-});
-
-// Tratamento de rota não encontrada
-app.use((req, res) => {
-  res.status(404).send("Página não encontrada");
-});
-
-// Inicializa servidor
 app.listen(PORT, () => {
-  console.log(`Servidor DARKCHAN rodando na porta ${PORT}`);
+  console.log(`Servidor rodando na porta ${PORT}`);
 });
