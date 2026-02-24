@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Fórum DARKCHAN</title>
   <style>
-    /* mesmo estilo que já te mandei antes */
     body {
       background: black url("./img/dedsec.jpeg") no-repeat center center fixed;
       background-size: cover;
@@ -13,7 +12,114 @@
       margin: 0;
       padding: 0;
     }
-    /* ... resto do CSS igual ao anterior ... */
+
+    header {
+      background: rgba(0,0,0,0.8);
+      padding: 20px;
+      text-align: center;
+      border-bottom: 2px solid red;
+      box-shadow: 0 0 15px red;
+    }
+
+    header h1 {
+      font-size: 2.5em;
+      text-shadow: 0 0 10px red, 0 0 20px #ff0000;
+      animation: pulse 0.5s infinite alternate;
+    }
+
+    nav {
+      background: rgba(20,20,20,0.9);
+      padding: 10px;
+      text-align: center;
+    }
+
+    nav a {
+      color: #00ff00;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: red;
+    }
+
+    .forum-container {
+      max-width: 900px;
+      margin: 30px auto;
+      background: rgba(0,0,0,0.85);
+      padding: 20px;
+      border: 2px solid red;
+      box-shadow: 0 0 20px red;
+    }
+
+    .post {
+      border-bottom: 1px solid #333;
+      padding: 15px 0;
+    }
+
+    .post h2 {
+      margin: 0;
+      color: red;
+      text-shadow: 0 0 10px #ff0000;
+    }
+
+    .post p {
+      margin: 10px 0;
+      color: #00ff00;
+    }
+
+    .post small {
+      color: gray;
+    }
+
+    .new-post {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 20px;
+      background: rgba(10,10,10,0.9);
+      border: 2px solid red;
+      box-shadow: 0 0 15px red;
+    }
+
+    .new-post input, .new-post textarea {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      background: black;
+      border: 1px solid red;
+      color: #00ff00;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .new-post button {
+      background: red;
+      color: black;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      animation: blink 0.3s infinite alternate;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: rgba(0,0,0,0.8);
+      border-top: 2px solid red;
+      color: #666;
+    }
+
+    @keyframes pulse {
+      from { text-shadow: 0 0 5px red; }
+      to { text-shadow: 0 0 25px #ff0000; }
+    }
+
+    @keyframes blink {
+      from { opacity: 1; }
+      to { opacity: 0.3; }
+    }
   </style>
 </head>
 <body>
@@ -45,21 +151,25 @@
 
   <script>
     async function loadPosts() {
-      const response = await fetch('/api/posts');
-      const posts = await response.json();
-      const forum = document.getElementById("forum");
-      forum.innerHTML = "";
+      try {
+        const response = await fetch('/api/posts');
+        const posts = await response.json();
+        const forum = document.getElementById("forum");
+        forum.innerHTML = "";
 
-      posts.forEach(post => {
-        const newPost = document.createElement("div");
-        newPost.classList.add("post");
-        newPost.innerHTML = `
-          <h2>${post.title}</h2>
-          <p>${post.content}</p>
-          <small>Postado por ${post.author}</small>
-        `;
-        forum.appendChild(newPost);
-      });
+        posts.forEach(post => {
+          const newPost = document.createElement("div");
+          newPost.classList.add("post");
+          newPost.innerHTML = `
+            <h2>${post.title}</h2>
+            <p>${post.content}</p>
+            <small>Postado por ${post.author}</small>
+          `;
+          forum.appendChild(newPost);
+        });
+      } catch (err) {
+        console.error("Erro ao carregar posts:", err);
+      }
     }
 
     async function addPost() {
@@ -72,17 +182,21 @@
         return;
       }
 
-      await fetch('/api/posts', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, content, author })
-      });
+      try {
+        await fetch('/api/posts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title, content, author })
+        });
 
-      loadPosts();
+        loadPosts();
 
-      document.getElementById("postTitle").value = "";
-      document.getElementById("postContent").value = "";
-      document.getElementById("postAuthor").value = "";
+        document.getElementById("postTitle").value = "";
+        document.getElementById("postContent").value = "";
+        document.getElementById("postAuthor").value = "";
+      } catch (err) {
+        console.error("Erro ao adicionar post:", err);
+      }
     }
 
     window.onload = loadPosts;
