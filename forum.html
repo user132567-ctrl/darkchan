@@ -20,6 +20,10 @@
       text-shadow:0 0 15px red, 0 0 30px #ff0000;
       animation: pulse 0.4s infinite alternate, glitch-text-fast 0.05s infinite;
     }
+    h1 img {
+      height:80px; vertical-align:middle; margin-right:10px;
+      box-shadow:0 0 15px red;
+    }
     .tabs {
       display:flex; justify-content:center; margin:20px;
     }
@@ -79,7 +83,10 @@
 <body>
   <canvas id="matrix"></canvas>
 
-  <h1>DARKCHAN - Fórum</h1>
+  <h1>
+    <img src="img/dedsec.jpeg" alt="DedSec">
+    DARKCHAN - Fórum
+  </h1>
 
   <div class="tabs">
     <div class="tab active" onclick="showBoard('catalogo')">Catálogo</div>
@@ -204,15 +211,8 @@
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       ctx.fillStyle = "#ff0000";
-      ctx.font = fontSize + "px monospace";
-
-      for(let i = 0; i < drops.length; i++) {
-        const text = letters.charAt(Math.floor(Math.random()*letters.length));
-        ctx.fillText(text, i*fontSize, drops[i]*fontSize);
-
-        if(drops[i]*fontSize > canvas.height && Math.random() > 0.95) 
-
-        if(drops[i]*fontSize > canvas.height && Math.random() > 0.95) {
+      ctx.font = fontSize + "
+            if(drops[i]*fontSize > canvas.height && Math.random() > 0.95) {
           drops[i] = 0;
         }
         drops[i] += 1.5; // velocidade aumentada
@@ -222,4 +222,4 @@
     setInterval(draw, 25); // queda mais rápida (25ms por frame)
   </script>
 </body>
-</html>        
+</html>
