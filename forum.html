@@ -220,5 +220,46 @@
     setInterval(draw, 33); // velocidade da queda dos códigos
   </script>
 </body>
+
+      // Matrix vermelho
+    const canvas = document.getElementById("matrix");
+    const ctx = canvas.getContext("2d");
+
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+
+    const letters = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const fontSize = 16; // letras um pouco maiores
+    const columns = canvas.width / fontSize;
+    const drops = [];
+
+    for(let x = 0; x < columns; x++) {
+      drops[x] = Math.random() * canvas.height / fontSize; // começa em posições aleatórias
+    }
+
+    function draw() {
+      ctx.fillStyle = "rgba(0,0,0,0.1)"; // fundo mais transparente para rastro intenso
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = "#ff0000"; // vermelho neon
+      ctx.font = fontSize + "px monospace";
+
+      for(let i = 0; i < drops.length; i++) {
+        const text = letters.charAt(Math.floor(Math.random()*letters.length));
+        ctx.fillText(text, i*fontSize, drops[i]*fontSize);
+
+        // reinicia em posições aleatórias para mais caos
+        if(drops[i]*fontSize > canvas.height && Math.random() > 0.95) {
+          drops[i] = 0;
+        }
+        drops[i] += 1.5; // velocidade aumentada
+      }
+    }
+
+    setInterval(draw, 25); // queda mais rápida (25ms por frame)
+  </script>
+</body>
+
 </html>
+
 
