@@ -5,10 +5,15 @@
   <title>DARKCHAN - Fórum</title>
   <style>
     body {
+      margin:0; padding:0;
       background:black; color:red; font-family:'Orbitron', sans-serif;
-      overflow-x:hidden;
-      animation: glitch-bg 0.3s infinite alternate;
-      box-shadow: inset 0 0 40px red; /* neon ao redor */
+      overflow:hidden;
+    }
+    canvas#matrix {
+      position:fixed; top:0; left:0;
+      width:100%; height:100%;
+      z-index:-1; /* fundo atrás do conteúdo */
+      background:black;
     }
     h1 {
       text-align:center; margin-top:20px;
@@ -23,14 +28,14 @@
       background:#111; border:2px solid red; color:red;
       box-shadow:0 0 15px red;
       transition:0.2s;
-      animation: glitch-text-fast 0.05s infinite; /* tremor ultra rápido nas abas */
+      animation: glitch-text-fast 0.05s infinite;
     }
     .tab.active {
       background:red; color:black; font-weight:bold;
     }
     .board {
       display:none;
-      background:#111; border:2px solid red; margin:20px auto; padding:20px;
+      background:rgba(17,17,17,0.85); border:2px solid red; margin:20px auto; padding:20px;
       width:85%; max-width:1000px;
       box-shadow:0 0 25px red, inset 0 0 15px #ff0000;
     }
@@ -55,12 +60,12 @@
     .post-input button {
       background:red; color:black; border:none; padding:6px 12px; cursor:pointer;
       animation: blink 0.2s infinite alternate;
+      box-shadow:0 0 15px red;
     }
 
     /* Animações */
     @keyframes blink { from {opacity:1;} to {opacity:0.2;} }
     @keyframes pulse { from {text-shadow:0 0 5px red;} to {text-shadow:0 0 25px #ff0000;} }
-    @keyframes glitch-bg { from {background:black;} to {background:#0a0a0a;} }
     @keyframes glitch-text-fast {
       0% { transform:translate(0,0); }
       20% { transform:translate(-2px,1px); }
@@ -72,6 +77,8 @@
   </style>
 </head>
 <body>
+  <canvas id="matrix"></canvas>
+
   <h1>DARKCHAN - Fórum</h1>
 
   <div class="tabs">
@@ -128,6 +135,7 @@
   </div>
 
   <script>
+    // Alternar abas
     function showBoard(boardId) {
       document.querySelectorAll('.board').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -135,6 +143,7 @@
       document.querySelector(`.tab[onclick="showBoard('${boardId}')"]`).classList.add('active');
     }
 
+    // Criar threads
     function newThread(boardId) {
       const input = document.getElementById("input-" + boardId);
       const text = input.value.trim();
@@ -173,6 +182,43 @@
         input.value = "";
       }
     }
+
+    // Matrix vermelho
+    const canvas = document.getElementById("matrix");
+    const ctx = canvas.getContext("2d");
+
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+
+    const letters = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops = [];
+
+    for(let x = 0; x < columns; x++) {
+      drops[x] = 1;
+    }
+
+    function draw() {
+      ctx.fillStyle = "rgba(0,0,0,0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = "#ff0000"; // vermelho neon
+      ctx.font = fontSize + "px monospace";
+
+      for(let i = 0; i < drops.length; i++) {
+        const text = letters.charAt(Math.floor(Math.random()*letters.length));
+        ctx.fillText(text, i*fontSize, drops[i]*fontSize);
+
+        if(drops[i]*fontSize > canvas.height && Math.random() > 0.975) { if(drops[i]*fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+    }
+
+    setInterval(draw, 33); // velocidade da queda dos códigos
   </script>
 </body>
 </html>
+
