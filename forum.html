@@ -2,224 +2,190 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>DARKCHAN - Fórum</title>
+  <title>Fórum DARKCHAN</title>
   <style>
     body {
-      margin:0; padding:0;
-      background:black; color:red; font-family:'Orbitron', sans-serif;
-      overflow:hidden;
-    }
-    canvas#matrix {
-      position:fixed; top:0; left:0;
-      width:100%; height:100%;
-      z-index:-1; /* fundo atrás do conteúdo */
-      background:black;
-    }
-    h1 {
-      text-align:center; margin-top:20px;
-      text-shadow:0 0 15px red, 0 0 30px #ff0000;
-      animation: pulse 0.4s infinite alternate, glitch-text-fast 0.05s infinite;
-    }
-    h1 img {
-      height:80px; vertical-align:middle; margin-right:10px;
-      box-shadow:0 0 15px red;
-    }
-    .tabs {
-      display:flex; justify-content:center; margin:20px;
-    }
-    .tab {
-      padding:10px 20px; margin:0 5px; cursor:pointer;
-      background:#111; border:2px solid red; color:red;
-      box-shadow:0 0 15px red;
-      transition:0.2s;
-      animation: glitch-text-fast 0.05s infinite;
-    }
-    .tab.active {
-      background:red; color:black; font-weight:bold;
-    }
-    .board {
-      display:none;
-      background:rgba(17,17,17,0.85); border:2px solid red; margin:20px auto; padding:20px;
-      width:85%; max-width:1000px;
-      box-shadow:0 0 25px red, inset 0 0 15px #ff0000;
-    }
-    .board.active { display:block; }
-    .board h2 {
-      color:red; text-shadow:0 0 10px red;
-      animation: pulse 0.4s infinite alternate;
-    }
-    .thread {
-      border-top:1px solid red; padding:10px; margin:10px 0;
-      background:#000; box-shadow:0 0 10px red;
-    }
-    .response {
-      margin-left:20px; border-left:2px solid red; padding-left:10px;
-      color:#ff6666; animation: blink 0.2s infinite alternate;
-    }
-    .post-input { margin-top:15px; }
-    .post-input input {
-      width:70%; padding:8px; background:black; border:1px solid red; color:white;
-      box-shadow:0 0 10px red;
-    }
-    .post-input button {
-      background:red; color:black; border:none; padding:6px 12px; cursor:pointer;
-      animation: blink 0.2s infinite alternate;
-      box-shadow:0 0 15px red;
+      background: black url("./img/dedsec.jpeg") no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Orbitron', sans-serif;
+      color: #00ff00;
+      margin: 0;
+      padding: 0;
     }
 
-    /* Animações */
-    @keyframes blink { from {opacity:1;} to {opacity:0.2;} }
-    @keyframes pulse { from {text-shadow:0 0 5px red;} to {text-shadow:0 0 25px #ff0000;} }
-    @keyframes glitch-text-fast {
-      0% { transform:translate(0,0); }
-      20% { transform:translate(-2px,1px); }
-      40% { transform:translate(2px,-1px); }
-      60% { transform:translate(-1px,2px); }
-      80% { transform:translate(1px,-2px); }
-      100% { transform:translate(0,0); }
+    header {
+      background: rgba(0,0,0,0.8);
+      padding: 20px;
+      text-align: center;
+      border-bottom: 2px solid red;
+      box-shadow: 0 0 15px red;
+    }
+
+    header h1 {
+      font-size: 2.5em;
+      text-shadow: 0 0 10px red, 0 0 20px #ff0000;
+      animation: pulse 0.5s infinite alternate;
+    }
+
+    nav {
+      background: rgba(20,20,20,0.9);
+      padding: 10px;
+      text-align: center;
+    }
+
+    nav a {
+      color: #00ff00;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: red;
+    }
+
+    .forum-container {
+      max-width: 900px;
+      margin: 30px auto;
+      background: rgba(0,0,0,0.85);
+      padding: 20px;
+      border: 2px solid red;
+      box-shadow: 0 0 20px red;
+    }
+
+    .post {
+      border-bottom: 1px solid #333;
+      padding: 15px 0;
+    }
+
+    .post h2 {
+      margin: 0;
+      color: red;
+      text-shadow: 0 0 10px #ff0000;
+    }
+
+    .post p {
+      margin: 10px 0;
+      color: #00ff00;
+    }
+
+    .post small {
+      color: gray;
+    }
+
+    .new-post {
+      margin-top: 30px;
+      padding: 20px;
+      background: rgba(10,10,10,0.9);
+      border: 2px solid red;
+      box-shadow: 0 0 15px red;
+    }
+
+    .new-post input, .new-post textarea {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      background: black;
+      border: 1px solid red;
+      color: #00ff00;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .new-post button {
+      background: red;
+      color: black;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      animation: blink 0.3s infinite alternate;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: rgba(0,0,0,0.8);
+      border-top: 2px solid red;
+      color: #666;
+    }
+
+    @keyframes pulse {
+      from { text-shadow: 0 0 5px red; }
+      to { text-shadow: 0 0 25px #ff0000; }
+    }
+
+    @keyframes blink {
+      from { opacity: 1; }
+      to { opacity: 0.3; }
     }
   </style>
 </head>
 <body>
-  <canvas id="matrix"></canvas>
+  <header>
+    <h1>Fórum DARKCHAN</h1>
+  </header>
 
-  <h1>
-    <img src="img/dedsec.jpeg" alt="DedSec">
-    DARKCHAN - Fórum
-  </h1>
+  <nav>
+    <a href="login.html">Login</a>
+    <a href="forum.html">Fórum</a>
+    <a href="#">Sobre</a>
+  </nav>
 
-  <div class="tabs">
-    <div class="tab active" onclick="showBoard('catalogo')">Catálogo</div>
-    <div class="tab" onclick="showBoard('tecnologia')">Tecnologia</div>
-    <div class="tab" onclick="showBoard('arte')">Arte</div>
-    <div class="tab" onclick="showBoard('games')">Games</div>
-    <div class="tab" onclick="showBoard('politica')">Política</div>
-  </div>
+  <div class="forum-container" id="forum">
+    <div class="post">
+      <h2>Bem-vindo ao Fórum</h2>
+      <p>Este é o espaço para compartilhar ideias, códigos e discussões sobre hacking e tecnologia.</p>
+      <small>Postado por Admin</small>
+    </div>
 
-  <div class="board active" id="catalogo">
-    <h2>Catálogo</h2>
-    <div class="threads"></div>
-    <div class="post-input">
-      <input type="text" id="input-catalogo" placeholder="Novo post em Catálogo...">
-      <button onclick="newThread('catalogo')">Postar</button>
+    <div class="post">
+      <h2>Primeira Discussão</h2>
+      <p>Qual sua opinião sobre segurança digital em 2026?</p>
+      <small>Postado por user132567-ctrl</small>
     </div>
   </div>
 
-  <div class="board" id="tecnologia">
-    <h2>Tecnologia</h2>
-    <div class="threads"></div>
-    <div class="post-input">
-      <input type="text" id="input-tecnologia" placeholder="Novo post em Tecnologia...">
-      <button onclick="newThread('tecnologia')">Postar</button>
-    </div>
+  <div class="new-post">
+    <h2>Criar novo post</h2>
+    <input type="text" id="postTitle" placeholder="Título do post">
+    <textarea id="postContent" rows="5" placeholder="Escreva sua mensagem..."></textarea>
+    <input type="text" id="postAuthor" placeholder="Seu nome">
+    <button onclick="addPost()">Publicar</button>
   </div>
 
-  <div class="board" id="arte">
-    <h2>Arte</h2>
-    <div class="threads"></div>
-    <div class="post-input">
-      <input type="text" id="input-arte" placeholder="Novo post em Arte...">
-      <button onclick="newThread('arte')">Postar</button>
-    </div>
-  </div>
-
-  <div class="board" id="games">
-    <h2>Games</h2>
-    <div class="threads"></div>
-    <div class="post-input">
-      <input type="text" id="input-games" placeholder="Novo post em Games...">
-      <button onclick="newThread('games')">Postar</button>
-    </div>
-  </div>
-
-  <div class="board" id="politica">
-    <h2>Política</h2>
-    <div class="threads"></div>
-    <div class="post-input">
-      <input type="text" id="input-politica" placeholder="Novo post em Política...">
-      <button onclick="newThread('politica')">Postar</button>
-    </div>
-  </div>
+  <footer>
+    <p>&copy; 2026 DARKCHAN - Todos os direitos reservados</p>
+  </footer>
 
   <script>
-    // Alternar abas
-    function showBoard(boardId) {
-      document.querySelectorAll('.board').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.getElementById(boardId).classList.add('active');
-      document.querySelector(`.tab[onclick="showBoard('${boardId}')"]`).classList.add('active');
-    }
+    function addPost() {
+      const title = document.getElementById("postTitle").value.trim();
+      const content = document.getElementById("postContent").value.trim();
+      const author = document.getElementById("postAuthor").value.trim();
 
-    // Criar threads
-    function newThread(boardId) {
-      const input = document.getElementById("input-" + boardId);
-      const text = input.value.trim();
-      if (text) {
-        const threadsDiv = document.querySelector("#" + boardId + " .threads");
-        const threadDiv = document.createElement("div");
-        threadDiv.className = "thread";
-        threadDiv.textContent = text;
-
-        const responseInput = document.createElement("input");
-        responseInput.placeholder = "Responder...";
-        responseInput.style.marginTop = "5px";
-        responseInput.style.width = "70%";
-        responseInput.style.background = "black";
-        responseInput.style.color = "white";
-        responseInput.style.border = "1px solid red";
-
-        const responseButton = document.createElement("button");
-        responseButton.textContent = "Responder";
-        responseButton.style.marginLeft = "5px";
-        responseButton.style.background = "red";
-        responseButton.style.color = "black";
-        responseButton.onclick = () => {
-          if (responseInput.value.trim()) {
-            const respDiv = document.createElement("div");
-            respDiv.className = "response";
-            respDiv.textContent = responseInput.value.trim();
-            threadDiv.appendChild(respDiv);
-            responseInput.value = "";
-          }
-        };
-
-        threadDiv.appendChild(responseInput);
-        threadDiv.appendChild(responseButton);
-        threadsDiv.appendChild(threadDiv);
-        input.value = "";
+      if (!title || !content || !author) {
+        alert("Preencha todos os campos!");
+        return;
       }
+
+      const forum = document.getElementById("forum");
+      const newPost = document.createElement("div");
+      newPost.classList.add("post");
+
+      newPost.innerHTML = `
+        <h2>${title}</h2>
+        <p>${content}</p>
+        <small>Postado por ${author}</small>
+      `;
+
+      forum.appendChild(newPost);
+
+      // Limpar campos
+      document.getElementById("postTitle").value = "";
+      document.getElementById("postContent").value = "";
+      document.getElementById("postAuthor").value = "";
     }
-
-    // Matrix vermelho
-    const canvas = document.getElementById("matrix");
-    const ctx = canvas.getContext("2d");
-
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
-
-    const letters = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const fontSize = 16;
-    const columns = canvas.width / fontSize;
-    const drops = [];
-
-    for(let x = 0; x < columns; x++) {
-      drops[x] = Math.random() * canvas.height / fontSize;
-    }
-
-    function draw() {
-      ctx.fillStyle = "rgba(0,0,0,0.1)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = "#ff0000";
-      ctx.font = fontSize + "
-            if(drops[i]*fontSize > canvas.height && Math.random() > 0.95) {
-          drops[i] = 0;
-        }
-        drops[i] += 1.5; // velocidade aumentada
-      }
-    }
-
-    setInterval(draw, 25); // queda mais rápida (25ms por frame)
   </script>
 </body>
 </html>
