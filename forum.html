@@ -23,6 +23,7 @@
       overflow: hidden;
     }
 
+    /* Scanline effect */
     body::after {
       content: "";
       position: fixed;
@@ -38,6 +39,15 @@
       animation: flicker 2s infinite;
     }
 
+    /* Canvas para Matrix Rain */
+    #matrixRain {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
     header, nav, footer {
       background: rgba(0,0,0,0.85);
       text-align: center;
@@ -45,6 +55,7 @@
       box-shadow: 0 0 15px red;
       padding: 15px;
       position: relative;
+      z-index: 1;
     }
 
     header h1 {
@@ -77,6 +88,7 @@
 
     nav {
       border-bottom: 1px solid red;
+      z-index: 1;
     }
 
     nav a {
@@ -100,6 +112,7 @@
       gap: 20px;
       padding: 20px;
       height: 100%;
+      z-index: 1;
     }
 
     .forum-container, .new-post {
@@ -179,6 +192,7 @@
     footer {
       border-top: 2px solid red;
       color: #666;
+      z-index: 1;
     }
 
     .sidebar {
@@ -207,12 +221,28 @@
     .feed-item {
       margin-bottom: 15px;
       padding: 10px;
-      border-bottom: 1px solid #333;
-      animation: fadeInRight 0.5s ease-in;
+      border: 1px solid red;
+      border-radius: 5px;
+      background: rgba(20,20,20,0.8);
+      transition: transform 0.3s, box-shadow 0.3s;
+      animation: slideIn 0.6s ease-out, flashNeon 1s ease-in;
+    }
+
+    .feed-item:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 10px red;
     }
 
     .feed-item strong {
+      display: block;
+      color: red;
+      font-size: 1.1em;
+      margin-bottom: 5px;
+    }
+
+    .feed-item span {
       color: #00ff00;
+      font-size: 0.9em;
     }
 
     .sidebar::before {
@@ -230,12 +260,19 @@
     @keyframes typing { from { width: 0; } to { width: 100%; } }
     @keyframes blinkCursor { from { border-right-color: red; } to { border-right-color: transparent; } }
     @keyframes flicker { 0% { opacity: 0.95; } 50% { opacity: 1; } 100% { opacity: 0.95; } }
-    @keyframes fadeInRight { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
     @keyframes glow { from { text-shadow: 0 0 5px #00ff00; } to { text-shadow: 0 0 20px red; } }
     @keyframes glitch { 0% { text-shadow: 2px 2px red; } 50% { text-shadow: -2px -2px lime; } 100% { text-shadow: 2px -2px #00ff00; } }
+    @keyframes slideIn { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes flashNeon { 0% { box-shadow: 0 0 20px red; } 50% {     @keyframes flashNeon { 
+      0% { box-shadow: 0 0 20px red; } 
+      50% { box-shadow: 0 0 5px transparent; } 
+      100% { box-shadow: 0 0 20px red; } 
+    }
   </style>
 </head>
 <body>
+  <canvas id="matrixRain"></canvas>
+
   <header>
     <h1>Fórum DARKCHAN</h1>
     <button id="fullscreenBtn">[ ⛶ ]</button>
@@ -270,6 +307,31 @@
   <script>
     async function loadPosts() {
       try {
+        const response = await fetch('/api/posts');
+        const posts = await response.json();
+        const forum = document.getElementById("forum");
+        const sidebar = document.getElementById("sidebar");
+
+        forum.innerHTML = "";
+        sidebar.innerHTML = "<h2>Últimos Posts</h2>";
+
+        posts.forEach(post => {
+          const newPost = document.createElement("div");
+          newPost.classList.add("post");
+          newPost.innerHTML = `
+            <h2>${post.title}</h2>
+            <p>${post.content}</p>
+            <small>Postado por ${post.author}</small>
+          `;
+          forum.appendChild(newPost);
+
+          const feedItem = document.createElement("div");
+          feedItem.classList.add("feed-item");
+          feedItem.innerHTML = `
+            <strong>${post.author}</strong>
+            <span>${post.title}</span>
+          `;
+          sidebar.appendChild(feedItem);
         });
       } catch (err) {
         console.error("Erro ao carregar posts:", err);
@@ -306,7 +368,6 @@
       }
     }
 
-    // Minimizar/expandir sidebar com mouse
     const sidebar = document.getElementById("sidebar");
     sidebar.addEventListener("mouseenter", () => {
       sidebar.classList.remove("minimized");
@@ -315,7 +376,6 @@
       sidebar.classList.add("minimized");
     });
 
-    // Botão fullscreen toggle
     const fullscreenBtn = document.getElementById("fullscreenBtn");
     fullscreenBtn.addEventListener("click", () => {
       if (!document.fullscreenElement) {
@@ -328,6 +388,47 @@
     });
 
     window.onload = loadPosts;
+
+    // Matrix Rain Effect
+    const canvas = document.getElementById("matrixRain");
+    const ctx = canvas.getContext("2d");
+
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+
+    const letters = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%&@";
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops = [];
+
+    for (let x = 0; x < columns; x++) {
+      drops[x] = 1;
+    }
+
+    function draw() {
+      ctx.fillStyle = "rgba(0,0,0,0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = "#0F0";
+      ctx.font = fontSize + "px monospace";
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters.charAt(Math.floor(Math.random() * letters.length));
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+    }
+
+    setInterval(draw, 33);
+
+    window.addEventListener("resize", () => {
+      canvas.height = window.innerHeight;
+      canvas.width = window.innerWidth;
+    });
   </script>
 </body>
 </html>
