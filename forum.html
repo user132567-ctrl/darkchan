@@ -23,7 +23,6 @@
       overflow: hidden;
     }
 
-    /* Scanline effect */
     body::after {
       content: "";
       position: fixed;
@@ -39,7 +38,6 @@
       animation: flicker 2s infinite;
     }
 
-    /* Canvas para Matrix Rain */
     #matrixRain {
       position: fixed;
       top: 0; left: 0;
@@ -108,7 +106,7 @@
     main {
       flex: 1;
       display: grid;
-      grid-template-columns: 1fr 1fr 300px;
+      grid-template-columns: 1fr 1fr;
       gap: 20px;
       padding: 20px;
       height: 100%;
@@ -196,6 +194,11 @@
     }
 
     .sidebar {
+      position: fixed;
+      right: 0;
+      top: 0;
+      height: 100%;
+      width: 300px;
       background: rgba(0,0,0,0.85);
       border-left: 2px solid red;
       box-shadow: -5px 0 15px red;
@@ -203,7 +206,7 @@
       padding: 20px;
       color: #00ff00;
       transition: width 0.5s ease, padding 0.5s ease;
-      position: relative;
+      z-index: 2;
     }
 
     .sidebar.minimized {
@@ -245,16 +248,6 @@
       font-size: 0.9em;
     }
 
-    .sidebar::before {
-      content: ">>";
-      position: absolute;
-      left: 5px;
-      top: 10px;
-      color: red;
-      font-weight: bold;
-      animation: pulse 1s infinite alternate;
-    }
-
     @keyframes pulse { from { opacity: 1; } to { opacity: 0.6; } }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes typing { from { width: 0; } to { width: 100%; } }
@@ -263,13 +256,20 @@
     @keyframes glow { from { text-shadow: 0 0 5px #00ff00; } to { text-shadow: 0 0 20px red; } }
     @keyframes glitch { 0% { text-shadow: 2px 2px red; } 50% { text-shadow: -2px -2px lime; } 100% { text-shadow: 2px -2px #00ff00; } }
     @keyframes slideIn { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
-    @keyframes flashNeon { 0% { box-shadow: 0 0 20px red; } 50% 
-        @keyframes flashNeon { 
-      0% { box-shadow: 0 0 20px red; } 
-      50% { box-shadow: 0 0 5px transparent; } 
-      100% { box-shadow: 0 0 20px red; } 
-    }
+    @keyframes flashNeon { 0% { box-shadow: 0 0 20px red; } 50% { box-shadow: 0 0 5px transparent; } 100% { box-shadow: 0 0 20px red; } }
   </style>
+</head>
+<body>
+  <canvas id="matrixRain"></canvas>
+
+  <header>
+    <h1>Fórum DARKCHAN</h1>
+    <button id="fullscreenBtn">[ <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Fórum DARKCHAN</title>
+  <!-- CSS completo já mostrado antes -->
 </head>
 <body>
   <canvas id="matrixRain"></canvas>
@@ -295,11 +295,11 @@
       <input type="text" id="postAuthor" placeholder="Seu nome">
       <button onclick="addPost()">Publicar</button>
     </div>
-
-    <div class="sidebar minimized" id="sidebar">
-      <h2>Últimos Posts</h2>
-    </div>
   </main>
+
+  <div class="sidebar minimized" id="sidebar">
+    <h2>Últimos Posts</h2>
+  </div>
 
   <footer>
     <p>&copy; 2026 DARKCHAN - Todos os direitos reservados</p>
@@ -390,7 +390,7 @@
 
     window.onload = loadPosts;
 
-    // Matrix Rain Effect
+    // Matrix Rain em vermelho
     const canvas = document.getElementById("matrixRain");
     const ctx = canvas.getContext("2d");
 
@@ -410,7 +410,7 @@
       ctx.fillStyle = "rgba(0,0,0,0.05)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.fillStyle = "#0F0";
+      ctx.fillStyle = "red"; // vermelho
       ctx.font = fontSize + "px monospace";
 
       for (let i = 0; i < drops.length; i++) {
@@ -433,4 +433,3 @@
   </script>
 </body>
 </html>
-                    
