@@ -23,7 +23,7 @@
       overflow: hidden;
     }
 
-    /* Cursor neon vermelho customizado */
+    /* Cursor neon vermelho */
     .cursor {
       position: fixed;
       width: 20px;
@@ -205,6 +205,7 @@
 
         forum.innerHTML = "";
 
+        // Exibe apenas os posts vindos da API (sem posts fixos)
         posts.forEach(post => {
           const newPost = document.createElement("div");
           newPost.classList.add("post");
@@ -223,14 +224,8 @@
     async function addPost() {
       const title = document.getElementById("postTitle").value.trim();
       const content = document.getElementById("postContent").value.trim();
-      const author = document.getElementById("postAuthor").value.trim();
-
-      if (!title || !content || !author) {
-        alert("Preencha todos os campos!");
-        return;
-      }
-
-      try {          await fetch('/api/posts', {
+      const author = document.getElement 
+              await fetch('/api/posts', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ title, content, author })
