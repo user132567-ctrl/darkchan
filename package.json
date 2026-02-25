@@ -1,17 +1,22 @@
 {
-  "name": "darkchan",
+  "name": "darkchan-forum",
   "version": "1.0.0",
-  "description": "Servidor do DARKCHAN em Node.js + Express",
+  "description": "Fórum DARKCHAN com backend Node/Express e persistência em banco de dados",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "body-parser": "^1.20.2",
+    "sqlite3": "^5.1.6",
+    "mongoose": "^8.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
   },
   "engines": {
     "node": ">=18"
-  },
-  "author": "Ash",
-  "license": "MIT"
+  }
 }
