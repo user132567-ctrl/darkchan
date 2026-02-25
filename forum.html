@@ -16,7 +16,6 @@
       overflow-x: hidden;
     }
 
-    /* Scanline effect */
     body::after {
       content: "";
       position: fixed;
@@ -162,7 +161,6 @@
       color: #666;
     }
 
-    /* Sidebar lateral */
     .sidebar {
       position: fixed;
       right: 0;
@@ -201,7 +199,6 @@
       color: #00ff00;
     }
 
-    /* Ícone indicador */
     .sidebar::before {
       content: ">>";
       position: absolute;
@@ -212,7 +209,6 @@
       animation: pulse 1s infinite alternate;
     }
 
-    /* Animations */
     @keyframes pulse {
       from { opacity: 1; }
       to { opacity: 0.6; }
@@ -256,9 +252,7 @@
     <a href="#">Sobre</a>
   </nav>
 
-  <div class="forum-container" id="forum">
-    <!-- Posts carregados do backend -->
-  </div>
+  <div class="forum-container" id="forum"></div>
 
   <div class="new-post">
     <h2>Criar novo post</h2>
@@ -270,7 +264,6 @@
 
   <div class="sidebar" id="sidebar">
     <h2>Últimos Posts</h2>
-    <!-- Feed será carregado aqui -->
   </div>
 
   <footer>
@@ -285,64 +278,65 @@
         const forum = document.getElementById("forum");
         const sidebar = document.getElementById("sidebar");
 
-        forum.innerHTML = "";
-        sidebar.innerHTML = "<h2>Últimos Posts</h2>";
+        forum.innerHTML =          <h2>${post.title}</h2>
+          <p>${post.content}</p>
+          <small>Postado por ${post.author}</small>
+        `;
+        forum.appendChild(newPost);
 
-        posts.forEach(post => {
-          // Área principal
-          const newPost = document.createElement("div");
-          newPost.classList.add("post");
-          newPost.innerHTML = `
-            <h2>${post.title}</h2>
-            <strong>${post.author}</strong>: ${post.title}
-          `;
-          sidebar.appendChild(feedItem);
-        });
-      } catch (err) {
-        console.error("Erro ao carregar posts:", err);
-      }
+        // Feed lateral
+        const feedItem = document.createElement("div");
+        feedItem.classList.add("feed-item");
+        feedItem.innerHTML = `
+          <strong>${post.author}</strong>: ${post.title}
+        `;
+        sidebar.appendChild(feedItem);
+      });
+    } catch (err) {
+      console.error("Erro ao carregar posts:", err);
+    }
+  }
+
+  async function addPost() {
+    const title = document.getElementById("postTitle").value.trim();
+    const content = document.getElementById("postContent").value.trim();
+    const author = document.getElementById("postAuthor").value.trim();
+
+    if (!title || !content || !author) {
+      alert("Preencha todos os campos!");
+      return;
     }
 
-    async function addPost() {
-      const title = document.getElementById("postTitle").value.trim();
-      const content = document.getElementById("postContent").value.trim();
-      const author = document.getElementById("postAuthor").value.trim();
+    try {
+      await fetch('/api/posts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, content, author })
+      });
 
-      if (!title || !content || !author) {
-        alert("Preencha todos os campos!");
-        return;
-      }
+      const beep = new Audio("https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg");
+      beep.play();
 
-      try {
-        await fetch('/api/posts', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ title, content, author })
-        });
+      loadPosts();
 
-        const beep = new Audio("https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg");
-        beep.play();
-
-        loadPosts();
-
-        document.getElementById("postTitle").value = "";
-        document.getElementById("postContent").value = "";
-        document.getElementById("postAuthor").value = "";
-      } catch (err) {
-        console.error("Erro ao adicionar post:", err);
-      }
+      document.getElementById("postTitle").value = "";
+      document.getElementById("postContent").value = "";
+      document.getElementById("postAuthor").value = "";
+    } catch (err) {
+      console.error("Erro ao adicionar post:", err);
     }
+  }
 
-    // Minimizar/expandir sidebar com mouse
-    const sidebar = document.getElementById("sidebar");
-    sidebar.addEventListener("mouseenter", () => {
-      sidebar.classList.remove("minimized");
-    });
-    sidebar.addEventListener("mouseleave", () => {
-      sidebar.classList.add("minimized");
-    });
+  // Minimizar/expandir sidebar com mouse
+  const sidebar = document.getElementById("sidebar");
+  sidebar.addEventListener("mouseenter", () => {
+    sidebar.classList.remove("minimized");
+  });
+  sidebar.addEventListener("mouseleave", () => {
+    sidebar.classList.add("minimized");
+  });
 
-    window.onload = loadPosts;
+  window.onload = loadPosts;
   </script>
 </body>
 </html>
