@@ -116,11 +116,7 @@
       animation: glitch 1s infinite alternate;
     }
 
-    .post:hover {
-      box-shadow: 0 0 15px red;
-      transform: scale(1.02);
-    }
-
+    .post:hover { box-shadow: 0 0 15px red; transform: scale(1.02); }
     .post h2 { margin: 0; color: red; text-shadow: 0 0 10px #ff0000; }
     .post p { margin: 10px 0; color: #00ff00; }
     .post small { color: gray; font-style: italic; }
@@ -191,9 +187,10 @@
       <h2>Criar novo post</h2>
       <input type="text" id="postTitle" placeholder="Título do post">
       <textarea id="postContent" rows="5" placeholder="Escreva sua mensagem..."></textarea>
-      <input type="text" 
-      </div>
-  </main>
+      <input type="text" id="postAuthor" placeholder="Seu nome">
+      <button onclick="addPost()">Publicar</button>
+    </div>
+    </main>
 
   <div class="sidebar" id="sidebar">
     <h2>Últimos Posts</h2>
