@@ -23,7 +23,6 @@
       overflow: hidden;
     }
 
-    /* Scanline effect */
     body::after {
       content: "";
       position: fixed;
@@ -58,7 +57,6 @@
       animation: typing 3s steps(20, end), blinkCursor 0.7s infinite;
     }
 
-    /* Botão fullscreen */
     #fullscreenBtn {
       position: absolute;
       right: 20px;
@@ -227,7 +225,6 @@
       animation: pulse 1s infinite alternate;
     }
 
-    /* Extra animations */
     @keyframes pulse { from { opacity: 1; } to { opacity: 0.6; } }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes typing { from { width: 0; } to { width: 100%; } }
@@ -269,33 +266,10 @@
   <footer>
     <p>&copy; 2026 DARKCHAN - Todos os direitos reservados</p>
   </footer>
+
   <script>
     async function loadPosts() {
       try {
-        const response = await fetch('/api/posts');
-        const posts = await response.json();
-        const forum = document.getElementById("forum");
-        const sidebar = document.getElementById("sidebar");
-
-        forum.innerHTML = "";
-        sidebar.innerHTML = "<h2>Últimos Posts</h2>";
-
-        posts.forEach(post => {
-          const newPost = document.createElement("div");
-          newPost.classList.add("post");
-          newPost.innerHTML = `
-            <h2>${post.title}</h2>
-            <p>${post.content}</p>
-            <small>Postado por ${post.author}</small>
-          `;
-          forum.appendChild(newPost);
-
-          const feedItem = document.createElement("div");
-          feedItem.classList.add("feed-item");
-          feedItem.innerHTML = `
-            <strong>${post.author}</strong>: ${post.title}
-          `;
-          sidebar.appendChild(feedItem);
         });
       } catch (err) {
         console.error("Erro ao carregar posts:", err);
@@ -357,4 +331,3 @@
   </script>
 </body>
 </html>
-
