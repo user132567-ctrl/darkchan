@@ -14,7 +14,7 @@
     }
 
     header {
-      background: rgba(0,0,0,0.8);
+      background: rgba(0,0,0,0.85);
       padding: 20px;
       text-align: center;
       border-bottom: 2px solid red;
@@ -31,6 +31,7 @@
       background: rgba(20,20,20,0.9);
       padding: 10px;
       text-align: center;
+      border-bottom: 1px solid red;
     }
 
     nav a {
@@ -59,6 +60,10 @@
       padding: 15px 0;
     }
 
+    .post:last-child {
+      border-bottom: none;
+    }
+
     .post h2 {
       margin: 0;
       color: red;
@@ -72,6 +77,7 @@
 
     .post small {
       color: gray;
+      font-style: italic;
     }
 
     .new-post {
@@ -81,6 +87,11 @@
       background: rgba(10,10,10,0.9);
       border: 2px solid red;
       box-shadow: 0 0 15px red;
+    }
+
+    .new-post h2 {
+      color: red;
+      text-shadow: 0 0 10px #ff0000;
     }
 
     .new-post input, .new-post textarea {
@@ -101,6 +112,7 @@
       cursor: pointer;
       font-weight: bold;
       animation: blink 0.3s infinite alternate;
+      margin-top: 10px;
     }
 
     footer {
@@ -134,7 +146,7 @@
   </nav>
 
   <div class="forum-container" id="forum">
-    <!-- Posts serão carregados aqui -->
+    <!-- Posts carregados do backend -->
   </div>
 
   <div class="new-post">
