@@ -11,6 +11,25 @@
       color: #00ff00;
       margin: 0;
       padding: 0;
+      cursor: crosshair; /* cursor estilo hacker */
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Scanline effect */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,0,0,0.05),
+        rgba(0,0,0,0.05) 2px,
+        transparent 4px
+      );
+      pointer-events: none;
+      animation: flicker 2s infinite;
     }
 
     header {
@@ -23,8 +42,12 @@
 
     header h1 {
       font-size: 2.5em;
+      color: #00ff00;
       text-shadow: 0 0 10px red, 0 0 20px #ff0000;
-      animation: glitch 1s infinite;
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: 2px solid red;
+      animation: typing 3s steps(20, end), blinkCursor 0.7s infinite;
     }
 
     nav {
@@ -61,10 +84,6 @@
       border-bottom: 1px solid #333;
       padding: 15px 0;
       transition: box-shadow 0.3s, transform 0.3s;
-    }
-
-    .post:last-child {
-      border-bottom: none;
     }
 
     .post:hover {
@@ -143,7 +162,7 @@
       color: #666;
     }
 
-    /* Animações */
+    /* Animations */
     @keyframes pulse {
       from { opacity: 1; }
       to { opacity: 0.6; }
@@ -154,13 +173,20 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes glitch {
-      0% { text-shadow: 2px 2px red, -2px -2px #00ff00; }
-      20% { text-shadow: -2px 2px red, 2px -2px #00ff00; }
-      40% { text-shadow: 2px -2px red, -2px 2px #00ff00; }
-      60% { text-shadow: -2px -2px red, 2px 2px #00ff00; }
-      80% { text-shadow: 2px 2px red, -2px -2px #00ff00; }
-      100% { text-shadow: 0 0 10px red, 0 0 20px #ff0000; }
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+
+    @keyframes blinkCursor {
+      from { border-right-color: red; }
+      to { border-right-color: transparent; }
+    }
+
+    @keyframes flicker {
+      0% { opacity: 0.95; }
+      50% { opacity: 1; }
+      100% { opacity: 0.95; }
     }
   </style>
 </head>
@@ -231,6 +257,10 @@
           body: JSON.stringify({ title, content, author })
         });
 
+        // Efeito sonoro ao publicar
+        const beep = new Audio("https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg");
+        beep.play();
+
         loadPosts();
 
         document.getElementById("postTitle").value = "";
@@ -239,8 +269,6 @@
       } catch (err) {
         console.error("Erro ao adicionar post:", err);
       }
-    }
-
     window.onload = loadPosts;
   </script>
 </body>
