@@ -233,7 +233,13 @@
       if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen();
       } else {
-        if         document.exitFullscreen();
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    });
+
+            document.exitFullscreen();
       }
     });
 
@@ -282,5 +288,3 @@
   </script>
 </body>
 </html>
-
-        
