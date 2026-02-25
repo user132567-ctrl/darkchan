@@ -23,6 +23,7 @@
       overflow: hidden;
     }
 
+    /* Scanline effect */
     body::after {
       content: "";
       position: fixed;
@@ -44,6 +45,7 @@
       border-bottom: 2px solid red;
       box-shadow: 0 0 15px red;
       padding: 15px;
+      position: relative;
     }
 
     header h1 {
@@ -56,6 +58,25 @@
       animation: typing 3s steps(20, end), blinkCursor 0.7s infinite;
     }
 
+    /* Botão fullscreen */
+    #fullscreenBtn {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      background: transparent;
+      border: 2px solid red;
+      color: #00ff00;
+      padding: 5px 10px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+    #fullscreenBtn:hover {
+      background: red;
+      color: black;
+      box-shadow: 0 0 10px red;
+    }
+
     nav {
       border-bottom: 1px solid red;
     }
@@ -66,6 +87,7 @@
       margin: 0 15px;
       font-weight: bold;
       transition: color 0.3s, text-shadow 0.3s;
+      animation: glow 2s infinite alternate;
     }
 
     nav a:hover {
@@ -95,6 +117,7 @@
       border-bottom: 1px solid #333;
       padding: 15px 0;
       transition: box-shadow 0.3s, transform 0.3s;
+      animation: glitch 1s infinite alternate;
     }
 
     .post:hover {
@@ -204,17 +227,21 @@
       animation: pulse 1s infinite alternate;
     }
 
+    /* Extra animations */
     @keyframes pulse { from { opacity: 1; } to { opacity: 0.6; } }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes typing { from { width: 0; } to { width: 100%; } }
     @keyframes blinkCursor { from { border-right-color: red; } to { border-right-color: transparent; } }
     @keyframes flicker { 0% { opacity: 0.95; } 50% { opacity: 1; } 100% { opacity: 0.95; } }
     @keyframes fadeInRight { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes glow { from { text-shadow: 0 0 5px #00ff00; } to { text-shadow: 0 0 20px red; } }
+    @keyframes glitch { 0% { text-shadow: 2px 2px red; } 50% { text-shadow: -2px -2px lime; } 100% { text-shadow: 2px -2px #00ff00; } }
   </style>
 </head>
 <body>
   <header>
     <h1>Fórum DARKCHAN</h1>
+    <button id="fullscreenBtn">[ ⛶ ]</button>
   </header>
 
   <nav>
@@ -229,52 +256,8 @@
     <div class="new-post">
       <h2>Criar novo post</h2>
       <input type="text" id="postTitle" placeholder="Título do post">
-      <textarea id="postContent" rows="5" placeholder="Escreva sua mensagem..."></textarea>
-      <input type="text" id="postAuthor" placeholder="Seu nome">
-      <button onclick="addPost()">Publicar</button>
-    </div>
-
-    <div class="sidebar minimized" id="sidebar">
-      <h2>Últimos Posts</h2>
-    </div>
-  </main>
-
-  <footer>
-    <p>&copy; 2026 DARKCHAN - Todos os direitos reservados</p>
-  </footer>
-
-  <script>
-    async function loadPosts() {
-      try {
-        const response = await fetch('/api/posts');
-        const posts = await response.json();
-        const forum = document.getElementById("forum");
-        const sidebar = document.getElementById("sidebar");
-
-        forum.innerHTML = "";
-        sidebar.innerHTML = "<h2>Últimos Posts</h2>";
-
-        posts.forEach(post => {
-          const newPost = document.createElement("div");
-          newPost.classList.add("post");
-          newPost.innerHTML = `
-            <h2>${post.title}</h2>
-            <p>${post.content}</p>
-            <small>Postado por ${post.author}</small>
-          `;
-          forum.appendChild(newPost);
-
-          const feedItem = document.createElement("div");
-          feedItem.classList.add("feed-item");
-          feedItem.innerHTML = `
-            <strong>${post.author}</strong>: ${post.title}
-          `;
-          sidebar.appendChild(feedItem);
-        });
-      } catch (err) {
-        console.error("Erro ao carregar posts:", err);
-      }
-      } catch (err) {
+      <textarea id="postContent" rows="5" placeholder="Escreva sua mensagem" 
+              } catch (err) {
         console.error("Erro ao carregar posts:", err);
       }
     }
@@ -316,6 +299,18 @@
     });
     sidebar.addEventListener("mouseleave", () => {
       sidebar.classList.add("minimized");
+    });
+
+    // Botão fullscreen toggle
+    const fullscreenBtn = document.getElementById("fullscreenBtn");
+    fullscreenBtn.addEventListener("click", () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
     });
 
     window.onload = loadPosts;
