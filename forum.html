@@ -207,6 +207,13 @@
       padding: 20px;
       color: #00ff00;
       z-index: 2;
+      transition: width 0.5s ease, padding 0.5s ease;
+    }
+
+    .sidebar.minimized {
+      width: 40px;
+      padding: 5px;
+      overflow: hidden;
     }
 
     .sidebar h2 {
@@ -258,10 +265,8 @@
 
   <header>
     <h1>Fórum DARKCHAN</h1>
-    <button id="fullscreenBtn">⛶</button>
-  </header>
-
-    <main>
+    <button id="fullscreenBtn">⛶ 
+        <main>
     <div class="forum-container" id="forum"></div>
 
     <div class="new-post">
@@ -273,7 +278,7 @@
     </div>
   </main>
 
-  <div class="sidebar" id="sidebar">
+  <div class="sidebar minimized" id="sidebar">
     <h2>Últimos Posts</h2>
   </div>
 
@@ -345,6 +350,16 @@
       }
     }
 
+    // Sidebar minimiza/expande ao passar o mouse
+    const sidebar = document.getElementById("sidebar");
+    sidebar.addEventListener("mouseenter", () => {
+      sidebar.classList.remove("minimized");
+    });
+    sidebar.addEventListener("mouseleave", () => {
+      sidebar.classList.add("minimized");
+    });
+
+    // Botão fullscreen
     const fullscreenBtn = document.getElementById("fullscreenBtn");
     fullscreenBtn.addEventListener("click", () => {
       if (!document.fullscreenElement) {
