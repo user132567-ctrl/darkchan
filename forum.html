@@ -18,9 +18,28 @@
       color: #00ff00;
       background: black url("./img/dedsec.jpeg") no-repeat center center fixed;
       background-size: cover;
-      cursor: crosshair;
+      cursor: none; /* escondemos o cursor padrão */
       position: relative;
       overflow: hidden;
+    }
+
+    /* Cursor neon vermelho customizado */
+    .cursor {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: red;
+      box-shadow: 0 0 10px red, 0 0 20px red, 0 0 40px red;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      animation: pulseCursor 1s infinite alternate;
+      z-index: 9999;
+    }
+
+    @keyframes pulseCursor {
+      from { box-shadow: 0 0 10px red, 0 0 20px red; }
+      to   { box-shadow: 0 0 20px red, 0 0 40px red; }
     }
 
     #matrixRain {
@@ -112,7 +131,9 @@
       border-bottom: 1px solid #333;
       padding: 15px 0;
       transition: box-shadow 0.3s, transform 0.3s;
-      animation: glitch 1s infinite alternate;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: slideUp 0.6s ease forwards;
     }
 
     .post:hover { box-shadow: 0 0 15px red; transform: scale(1.02); }
@@ -141,11 +162,13 @@
     @keyframes typing { from { width: 0; } to { width: 100%; } }
     @keyframes blinkCursor { from { border-right-color: red; } to { border-right-color: transparent; } }
     @keyframes glow { from { text-shadow: 0 0 5px #00ff00; } to { text-shadow: 0 0 20px red; } }
+    @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
     @keyframes glitch { 0% { text-shadow: 2px 2px red; } 50% { text-shadow: -2px -2px lime; } 100% { text-shadow: 2px -2px #00ff00; } }
   </style>
 </head>
 <body>
   <canvas id="matrixRain"></canvas>
+  <div class="cursor" id="cursor"></div>
 
   <header>
     <h1>Fórum DARKCHAN</h1>
@@ -207,8 +230,7 @@
         return;
       }
 
-      try {
-        await fetch('/api/posts', {
+      try {          await fetch('/api/posts', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ title, content, author })
@@ -239,7 +261,7 @@
       }
     });
 
-        window.onload = loadPosts;
+    window.onload = loadPosts;
 
     // Matrix Rain em vermelho
     const canvas = document.getElementById("matrixRain");
@@ -280,6 +302,13 @@
     window.addEventListener("resize", () => {
       canvas.height = window.innerHeight;
       canvas.width = window.innerWidth;
+    });
+
+    // Cursor neon vermelho pulsante
+    const cursor = document.getElementById("cursor");
+    document.addEventListener("mousemove", e => {
+      cursor.style.left = e.pageX + "px";
+      cursor.style.top = e.pageY + "px";
     });
   </script>
 </body>
