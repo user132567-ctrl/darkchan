@@ -223,9 +223,16 @@
 
     async function addPost() {
       const title = document.getElementById("postTitle").value.trim();
-      const content = document.getElementById("postContent").value.trim();
-      const author = document.getElement 
-              await fetch('/api/posts', {
+      const content = document.getElementById
+            const author = document.getElementById("postAuthor").value.trim();
+
+      if (!title || !content || !author) {
+        alert("Preencha todos os campos!");
+        return;
+      }
+
+      try {
+        await fetch('/api/posts', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ title, content, author })
