@@ -256,8 +256,48 @@
     <div class="new-post">
       <h2>Criar novo post</h2>
       <input type="text" id="postTitle" placeholder="Título do post">
-      <textarea id="postContent" rows="5" placeholder="Escreva sua mensagem" 
-              } catch (err) {
+      <textarea id="postContent" rows="5" placeholder="Escreva sua mensagem..."></textarea>
+      <input type="text" id="postAuthor" placeholder="Seu nome">
+      <button onclick="addPost()">Publicar</button>
+    </div>
+
+    <div class="sidebar minimized" id="sidebar">
+      <h2>Últimos Posts</h2>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 DARKCHAN - Todos os direitos reservados</p>
+  </footer>
+  <script>
+    async function loadPosts() {
+      try {
+        const response = await fetch('/api/posts');
+        const posts = await response.json();
+        const forum = document.getElementById("forum");
+        const sidebar = document.getElementById("sidebar");
+
+        forum.innerHTML = "";
+        sidebar.innerHTML = "<h2>Últimos Posts</h2>";
+
+        posts.forEach(post => {
+          const newPost = document.createElement("div");
+          newPost.classList.add("post");
+          newPost.innerHTML = `
+            <h2>${post.title}</h2>
+            <p>${post.content}</p>
+            <small>Postado por ${post.author}</small>
+          `;
+          forum.appendChild(newPost);
+
+          const feedItem = document.createElement("div");
+          feedItem.classList.add("feed-item");
+          feedItem.innerHTML = `
+            <strong>${post.author}</strong>: ${post.title}
+          `;
+          sidebar.appendChild(feedItem);
+        });
+      } catch (err) {
         console.error("Erro ao carregar posts:", err);
       }
     }
@@ -317,3 +357,4 @@
   </script>
 </body>
 </html>
+
