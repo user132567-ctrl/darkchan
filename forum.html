@@ -24,7 +24,7 @@
     header h1 {
       font-size: 2.5em;
       text-shadow: 0 0 10px red, 0 0 20px #ff0000;
-      animation: pulse 0.5s infinite alternate;
+      animation: glitch 1s infinite;
     }
 
     nav {
@@ -39,11 +39,12 @@
       text-decoration: none;
       margin: 0 15px;
       font-weight: bold;
-      transition: color 0.3s;
+      transition: color 0.3s, text-shadow 0.3s;
     }
 
     nav a:hover {
       color: red;
+      text-shadow: 0 0 10px red;
     }
 
     .forum-container {
@@ -53,15 +54,22 @@
       padding: 20px;
       border: 2px solid red;
       box-shadow: 0 0 20px red;
+      animation: fadeIn 1s ease-in;
     }
 
     .post {
       border-bottom: 1px solid #333;
       padding: 15px 0;
+      transition: box-shadow 0.3s, transform 0.3s;
     }
 
     .post:last-child {
       border-bottom: none;
+    }
+
+    .post:hover {
+      box-shadow: 0 0 15px red;
+      transform: scale(1.02);
     }
 
     .post h2 {
@@ -87,6 +95,7 @@
       background: rgba(10,10,10,0.9);
       border: 2px solid red;
       box-shadow: 0 0 15px red;
+      animation: fadeIn 1.5s ease-in;
     }
 
     .new-post h2 {
@@ -102,6 +111,12 @@
       border: 1px solid red;
       color: #00ff00;
       font-family: 'Orbitron', sans-serif;
+      transition: box-shadow 0.3s;
+    }
+
+    .new-post input:focus, .new-post textarea:focus {
+      box-shadow: 0 0 10px red;
+      outline: none;
     }
 
     .new-post button {
@@ -111,8 +126,13 @@
       border: none;
       cursor: pointer;
       font-weight: bold;
-      animation: blink 0.3s infinite alternate;
+      animation: pulse 1s infinite alternate;
       margin-top: 10px;
+      transition: transform 0.2s;
+    }
+
+    .new-post button:hover {
+      transform: scale(1.05);
     }
 
     footer {
@@ -123,14 +143,24 @@
       color: #666;
     }
 
+    /* Animações */
     @keyframes pulse {
-      from { text-shadow: 0 0 5px red; }
-      to { text-shadow: 0 0 25px #ff0000; }
+      from { opacity: 1; }
+      to { opacity: 0.6; }
     }
 
-    @keyframes blink {
-      from { opacity: 1; }
-      to { opacity: 0.3; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes glitch {
+      0% { text-shadow: 2px 2px red, -2px -2px #00ff00; }
+      20% { text-shadow: -2px 2px red, 2px -2px #00ff00; }
+      40% { text-shadow: 2px -2px red, -2px 2px #00ff00; }
+      60% { text-shadow: -2px -2px red, 2px 2px #00ff00; }
+      80% { text-shadow: 2px 2px red, -2px -2px #00ff00; }
+      100% { text-shadow: 0 0 10px red, 0 0 20px #ff0000; }
     }
   </style>
 </head>
