@@ -51,8 +51,9 @@
       animation: typing 3s steps(20, end), blinkCursor 0.7s infinite;
     }
 
-    #fullscreenBtn, #toggleSidebarBtn {
+    #fullscreenBtn {
       position: absolute;
+      right: 20px;
       top: 20px;
       background: transparent;
       border: 2px solid red;
@@ -63,9 +64,7 @@
       font-weight: bold;
       transition: all 0.3s;
     }
-    #fullscreenBtn { right: 20px; }
-    #toggleSidebarBtn { right: 60px; }
-    #fullscreenBtn:hover, #toggleSidebarBtn:hover {
+    #fullscreenBtn:hover {
       background: red;
       color: black;
       box-shadow: 0 0 10px red;
@@ -137,33 +136,12 @@
 
     footer { border-top: 2px solid red; color: #666; z-index: 1; }
 
-    .sidebar {
-      position: fixed; right: 0; top: 0; height: 100%; width: 300px;
-      background: rgba(0,0,0,0.85); border-left: 2px solid red;
-      box-shadow: -5px 0 15px red; overflow-y: auto; padding: 20px;
-      color: #00ff00; z-index: 2;
-      transition: width 0.5s ease, padding 0.5s ease;
-    }
-    .sidebar.minimized { width: 40px; padding: 5px; overflow: hidden; }
-
-    .sidebar h2 { color: red; text-shadow: 0 0 10px #ff0000; margin-top: 0; }
-    .feed-item {
-      margin-bottom: 15px; padding: 10px; border: 1px solid red; border-radius: 5px;
-      background: rgba(20,20,20,0.8); transition: transform 0.3s, box-shadow 0.3s;
-      animation: slideIn 0.6s ease-out, flashNeon 1s ease-in;
-    }
-    .feed-item:hover { transform: scale(1.05); box-shadow: 0 0 10px red; }
-    .feed-item strong { display: block; color: red; font-size: 1.1em; margin-bottom: 5px; }
-    .feed-item span { color: #00ff00; font-size: 0.9em; }
-
     @keyframes pulse { from { opacity: 1; } to { opacity: 0.6; } }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes typing { from { width: 0; } to { width: 100%; } }
     @keyframes blinkCursor { from { border-right-color: red; } to { border-right-color: transparent; } }
     @keyframes glow { from { text-shadow: 0 0 5px #00ff00; } to { text-shadow: 0 0 20px red; } }
     @keyframes glitch { 0% { text-shadow: 2px 2px red; } 50% { text-shadow: -2px -2px lime; } 100% { text-shadow: 2px -2px #00ff00; } }
-    @keyframes slideIn { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
-    @keyframes flashNeon { 0% { box-shadow: 0 0 20px red; } 50% { box-shadow: 0 0 5px transparent; } 100% { box-shadow: 0 0 20px red; } }
   </style>
 </head>
 <body>
@@ -171,7 +149,6 @@
 
   <header>
     <h1>Fórum DARKCHAN</h1>
-    <button id="toggleSidebarBtn">≡</button>
     <button id="fullscreenBtn">⛶</button>
   </header>
 
@@ -190,11 +167,7 @@
       <input type="text" id="postAuthor" placeholder="Seu nome">
       <button onclick="addPost()">Publicar</button>
     </div>
-    </main>
-
-  <div class="sidebar" id="sidebar">
-    <h2>Últimos Posts</h2>
-  </div>
+  </main>
 
   <footer>
     <p>&copy; 2026 DARKCHAN - Todos os direitos reservados</p>
@@ -206,10 +179,8 @@
         const response = await fetch('/api/posts');
         const posts = await response.json();
         const forum = document.getElementById("forum");
-        const sidebar = document.getElementById("sidebar");
 
         forum.innerHTML = "";
-        sidebar.innerHTML = "<h2>Últimos Posts</h2>";
 
         posts.forEach(post => {
           const newPost = document.createElement("div");
@@ -220,14 +191,6 @@
             <small>Postado por ${post.author}</small>
           `;
           forum.appendChild(newPost);
-
-          const feedItem = document.createElement("div");
-          feedItem.classList.add("feed-item");
-          feedItem.innerHTML = `
-            <strong>${post.author}</strong>
-            <span>${post.title}</span>
-          `;
-          sidebar.appendChild(feedItem);
         });
       } catch (err) {
         console.error("Erro ao carregar posts:", err);
@@ -264,22 +227,13 @@
       }
     }
 
-    // Botão toggle da sidebar
-    const sidebar = document.getElementById("sidebar");
-    const toggleSidebarBtn = document.getElementById("toggleSidebarBtn");
-    toggleSidebarBtn.addEventListener("click", () => {
-      sidebar.classList.toggle("minimized");
-    });
-
     // Botão fullscreen
     const fullscreenBtn = document.getElementById("fullscreenBtn");
     fullscreenBtn.addEventListener("click", () => {
       if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen();
       } else {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        }
+        if         document.exitFullscreen();
       }
     });
 
@@ -328,3 +282,5 @@
   </script>
 </body>
 </html>
+
+        
