@@ -91,8 +91,8 @@
 
     main {
       flex: 1;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: flex;
+      flex-direction: column;
       gap: 20px;
       padding: 20px;
       height: 100%;
@@ -239,11 +239,7 @@
       }
     });
 
-            document.exitFullscreen();
-      }
-    });
-
-    window.onload = loadPosts;
+        window.onload = loadPosts;
 
     // Matrix Rain em vermelho
     const canvas = document.getElementById("matrixRain");
