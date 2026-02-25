@@ -11,7 +11,7 @@
       color: #00ff00;
       margin: 0;
       padding: 0;
-      cursor: crosshair; /* cursor estilo hacker */
+      cursor: crosshair;
       position: relative;
       overflow-x: hidden;
     }
@@ -162,6 +162,38 @@
       color: #666;
     }
 
+    /* Sidebar lateral */
+    .sidebar {
+      position: fixed;
+      right: 0;
+      top: 0;
+      width: 300px;
+      height: 100%;
+      background: rgba(0,0,0,0.85);
+      border-left: 2px solid red;
+      box-shadow: -5px 0 15px red;
+      overflow-y: auto;
+      padding: 20px;
+      color: #00ff00;
+    }
+
+    .sidebar h2 {
+      color: red;
+      text-shadow: 0 0 10px #ff0000;
+      margin-top: 0;
+    }
+
+    .feed-item {
+      margin-bottom: 15px;
+      padding: 10px;
+      border-bottom: 1px solid #333;
+      animation: fadeInRight 0.5s ease-in;
+    }
+
+    .feed-item strong {
+      color: #00ff00;
+    }
+
     /* Animations */
     @keyframes pulse {
       from { opacity: 1; }
@@ -188,6 +220,11 @@
       50% { opacity: 1; }
       100% { opacity: 0.95; }
     }
+
+    @keyframes fadeInRight {
+      from { opacity: 0; transform: translateX(50px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
   </style>
 </head>
 <body>
@@ -213,6 +250,11 @@
     <button onclick="addPost()">Publicar</button>
   </div>
 
+  <div class="sidebar" id="sidebar">
+    <h2>Últimos Posts</h2>
+    <!-- Feed será carregado aqui -->
+  </div>
+
   <footer>
     <p>&copy; 2026 DARKCHAN - Todos os direitos reservados</p>
   </footer>
@@ -223,9 +265,13 @@
         const response = await fetch('/api/posts');
         const posts = await response.json();
         const forum = document.getElementById("forum");
+        const sidebar = document.getElementById("sidebar");
+
         forum.innerHTML = "";
+        sidebar.innerHTML = "<h2>Últimos Posts</h2>";
 
         posts.forEach(post => {
+          // Área principal
           const newPost = document.createElement("div");
           newPost.classList.add("post");
           newPost.innerHTML = `
@@ -234,12 +280,21 @@
             <small>Postado por ${post.author}</small>
           `;
           forum.appendChild(newPost);
+
+          // Feed lateral
+          const feedItem = document.createElement("div");
+          feedItem.classList.add("feed-item");
+          feedItem.innerHTML = `
+            <strong>${post.author}</strong>: ${post.title}
+          `;
+          sidebar.appendChild(feedItem);
         });
       } catch (err) {
         console.error("Erro ao carregar posts:", err);
       }
     }
 
+    async function addPost
     async function addPost() {
       const title = document.getElementById("postTitle").value.trim();
       const content = document.getElementById("postContent").value.trim();
@@ -257,7 +312,7 @@
           body: JSON.stringify({ title, content, author })
         });
 
-        // Efeito sonoro ao publicar
+        // Som discreto ao publicar
         const beep = new Audio("https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg");
         beep.play();
 
@@ -269,7 +324,11 @@
       } catch (err) {
         console.error("Erro ao adicionar post:", err);
       }
+    }
+
     window.onload = loadPosts;
   </script>
 </body>
 </html>
+
+    
