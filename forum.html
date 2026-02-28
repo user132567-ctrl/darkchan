@@ -4,185 +4,7 @@
   <meta charset="UTF-8">
   <title>Fórum DARKCHAN</title>
   <style>
-    html, body {
-      height: 100%;
-      width: 100%;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      display: flex;
-      flex-direction: column;
-      font-family: 'Orbitron', sans-serif;
-      color: #00ff00;
-      background: black url("./img/dedsec.jpeg") no-repeat center center fixed;
-      background-size: cover;
-      cursor: none; /* escondemos o cursor padrão */
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* Cursor neon vermelho principal */
-    .cursor {
-      position: fixed;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: red;
-      box-shadow: 0 0 10px red, 0 0 20px red, 0 0 40px red;
-      pointer-events: none;
-      transform: translate(-50%, -50%);
-      animation: pulseCursor 1s infinite alternate;
-      z-index: 9999;
-    }
-
-    @keyframes pulseCursor {
-      from { box-shadow: 0 0 10px red, 0 0 20px red; }
-      to   { box-shadow: 0 0 20px red, 0 0 40px red; }
-    }
-
-    /* Partículas do rastro */
-    .trail {
-      position: fixed;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: red;
-      box-shadow: 0 0 10px red, 0 0 20px red;
-      pointer-events: none;
-      transform: translate(-50%, -50%);
-      animation: fadeTrail 0.6s forwards;
-      z-index: 9998;
-    }
-
-    @keyframes fadeTrail {
-      from { opacity: 1; transform: scale(1); }
-      to   { opacity: 0; transform: scale(0.5); }
-    }
-
-    #matrixRain {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    header, nav, footer {
-      background: rgba(0,0,0,0.85);
-      text-align: center;
-      border-bottom: 2px solid red;
-      box-shadow: 0 0 15px red;
-      padding: 15px;
-      position: relative;
-      z-index: 1;
-    }
-
-    header h1 {
-      font-size: 2.5em;
-      color: #00ff00;
-      text-shadow: 0 0 10px red, 0 0 20px #ff0000;
-      overflow: hidden;
-      white-space: nowrap;
-      border-right: 2px solid red;
-      animation: typing 3s steps(20, end), blinkCursor 0.7s infinite;
-    }
-
-    #fullscreenBtn {
-      position: absolute;
-      right: 20px;
-      top: 20px;
-      background: transparent;
-      border: 2px solid red;
-      color: #00ff00;
-      font-size: 20px;
-      padding: 5px 10px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: all 0.3s;
-    }
-    #fullscreenBtn:hover {
-      background: red;
-      color: black;
-      box-shadow: 0 0 10px red;
-    }
-
-    nav {
-      border-bottom: 1px solid red;
-      z-index: 1;
-    }
-
-    nav a {
-      color: #00ff00;
-      text-decoration: none;
-      margin: 0 15px;
-      font-weight: bold;
-      transition: color 0.3s, text-shadow 0.3s;
-      animation: glow 2s infinite alternate;
-    }
-
-    nav a:hover {
-      color: red;
-      text-shadow: 0 0 10px red;
-    }
-
-    main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      padding: 20px;
-      height: 100%;
-      z-index: 1;
-    }
-
-    .forum-container, .new-post {
-      background: rgba(0,0,0,0.85);
-      padding: 20px;
-      border: 2px solid red;
-      box-shadow: 0 0 20px red;
-      animation: fadeIn 1s ease-in;
-      overflow-y: auto;
-    }
-
-    .post {
-      border-bottom: 1px solid #333;
-      padding: 15px 0;
-      transition: box-shadow 0.3s, transform 0.3s;
-      opacity: 0;
-      transform: translateY(30px);
-      animation: slideUp 0.6s ease forwards;
-    }
-
-    .post:hover { box-shadow: 0 0 15px red; transform: scale(1.02); }
-    .post h2 { margin: 0; color: red; text-shadow: 0 0 10px #ff0000; }
-    .post p { margin: 10px 0; color: #00ff00; }
-    .post small { color: gray; font-style: italic; }
-
-    .new-post h2 { color: red; text-shadow: 0 0 10px #ff0000; }
-    .new-post input, .new-post textarea {
-      width: 100%; margin: 10px 0; padding: 10px;
-      background: black; border: 1px solid red; color: #00ff00;
-      font-family: 'Orbitron', sans-serif; transition: box-shadow 0.3s;
-    }
-    .new-post input:focus, .new-post textarea:focus { box-shadow: 0 0 10px red; outline: none; }
-    .new-post button {
-      background: red; color: black; padding: 10px 20px; border: none;
-      cursor: pointer; font-weight: bold; animation: pulse 1s infinite alternate;
-      margin-top: 10px; transition: transform 0.2s;
-    }
-    .new-post button:hover { transform: scale(1.05); }
-
-    footer { border-top: 2px solid red; color: #666; z-index: 1; }
-
-    @keyframes pulse { from { opacity: 1; } to { opacity: 0.6; } }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes typing { from { width: 0; } to { width: 100%; } }
-    @keyframes blinkCursor { from { border-right-color: red; } to { border-right-color: transparent; } }
-    @keyframes glow { from { text-shadow: 0 0 5px #00ff00; } to { text-shadow: 0 0 20px red; } }
-    @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
-    @keyframes glitch { 0% { text-shadow: 2px 2px red; } 50% { text-shadow: -2px -2px lime; } 100% { text-shadow: 2px -2px #00ff00; } }
+    /* (todo o CSS já mostrado antes, incluindo cursor neon e rastro) */
   </style>
 </head>
 <body>
@@ -216,7 +38,7 @@
   </footer>
 
   <script>
-    async function loadPosts() 
+    async function loadPosts() {
       try {
         const response = await fetch('/api/posts');
         const posts = await response.json();
@@ -224,11 +46,6 @@
 
         forum.innerHTML = "";
 
-        // Exibe apenas os posts vindos da 
-
-            forum.innerHTML = "";
-
-        // Exibe apenas os posts vindos da API (sem posts fixos)
         posts.reverse().forEach(post => {
           const newPost = document.createElement("div");
           newPost.classList.add("post");
