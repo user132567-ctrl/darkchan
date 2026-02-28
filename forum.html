@@ -18,7 +18,7 @@
       color: #00ff00;
       background: black url("./img/dedsec.jpeg") no-repeat center center fixed;
       background-size: cover;
-      cursor: default; /* agora o cursor aparece normalmente */
+      cursor: default; /* cursor normal aparece */
       position: relative;
       overflow: hidden;
     }
@@ -182,7 +182,6 @@
     @keyframes blinkCursor { from { border-right-color: red; } to { border-right-color: transparent; } }
     @keyframes glow { from { text-shadow: 0 0 5px #00ff00; } to { text-shadow: 0 0 20px red; } }
     @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
-    @keyframes glitch { 0% { text-shadow: 2px 2px red; } 50% { text-shadow: -2px -2px lime; } 100% { text-shadow: 2px -2px #00ff00; } }
   </style>
 </head>
 <body>
@@ -222,9 +221,8 @@
         const posts = await response.json();
         const forum = document.getElementById("forum");
 
-        forum.innerHTML = "";
-
-        posts.reverse            forum.appendChild(newPost);
+        forum.innerHTML = "";  
+                  forum.appendChild(newPost);
         });
       } catch (err) {
         console.error("Erro ao carregar posts:", err);
@@ -337,4 +335,5 @@
   </script>
 </body>
 </html>
-        
+
+        posts.reverse().forEach(post
