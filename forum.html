@@ -221,8 +221,10 @@
         const posts = await response.json();
         const forum = document.getElementById("forum");
 
-        forum.innerHTML = "";  
-                  forum.appendChild(newPost);
+        forum.innerHTML = "";
+
+        posts.reverse().forEach(post => {
+          const new           forum.appendChild(newPost);
         });
       } catch (err) {
         console.error("Erro ao carregar posts:", err);
@@ -335,5 +337,3 @@
   </script>
 </body>
 </html>
-
-        posts.reverse().forEach(post
